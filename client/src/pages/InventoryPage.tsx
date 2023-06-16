@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from "react";
 import {
   createIngredients,
@@ -7,12 +8,31 @@ import {
 import "./InventoryPage.css";
 import { FaTrash } from "react-icons/fa";
 
-function InventoryPage({ allRecipes }) {
+interface Ingredient {
+  _id: string,
+  name: string,
+  amount: string,
+  type: string
+}
+
+interface Recipe {
+  ingredients: {
+    hops: Ingredient[];
+    malts: Ingredient[];
+    yeast: string;
+  };
+}
+
+interface InventoryPageProps {
+  allRecipes: Recipe[];
+}
+
+const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
   const ourRecipes = allRecipes;
   // Options for DropDown lists
-  const allHops = new Set();
-  const allMalts = new Set();
-  const allYeast = new Set();
+  const allHops = new Set<string>();
+  const allMalts = new Set<string>();
+  const allYeast = new Set<string>();
 
   if (ourRecipes) {
     ourRecipes.forEach((recipe) => {
@@ -25,11 +45,12 @@ function InventoryPage({ allRecipes }) {
       allYeast.add(recipe.ingredients.yeast);
     });
   }
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   useEffect(() => {
     refreshIngredients();
   }, []);
 
+  // maybe <number>
   const [hopsQuantity, setHopsQuantity] = useState("");
   const [maltsQuantity, setMaltsQuantity] = useState("");
   const [yeastQuantity, setYeastQuantity] = useState("");
@@ -44,72 +65,71 @@ function InventoryPage({ allRecipes }) {
 
   // functions to add ingridients(we are posting the topic to backend and update state)
   const addHops = () => {
-    const hopsName = document.querySelector(
+    const hopsName = (document.querySelector(
       ".form-for-adding-hops select"
-    ).value;
+    ) as HTMLSelectElement).value;
     if (hopsName === "" || hopsQuantity === "") {
       alert("Please enter proper name and quantity for hops");
       return;
     }
 
     createIngredients(hopsName, hopsQuantity, "hops")
-      .then((hopsinfo) => {
+      .then((hopsinfo: Ingredient) => {
         console.log(hopsinfo);
         refreshIngredients();
         resetFormInputs();
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
 
   const addMalts = () => {
-    const maltsName = document.querySelector(
+    const maltsName = (document.querySelector(
       ".form-for-adding-malts select"
-    ).value;
+    ) as HTMLSelectElement).value;
     if (maltsName === "" || maltsQuantity === "") {
       alert("Please enter proper name and quantity for malts");
       return;
     }
 
     createIngredients(maltsName, maltsQuantity, "malts")
-      .then((maltsinfo) => {
+      .then((maltsinfo: Ingredient) => {
         console.log(maltsinfo);
         refreshIngredients();
         resetFormInputs();
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
 
   const addYeast = () => {
-    const yeastName = document.querySelector(
+    const yeastName = (document.querySelector(
       ".form-for-adding-yeast select"
-    ).value;
-
+    ) as HTMLSelectElement).value;
     if (yeastName === "" || yeastQuantity === "") {
       alert("Please enter proper name and quantity for yeast");
       return;
     }
 
     createIngredients(yeastName, yeastQuantity, "yeast")
-      .then((yeastinfo) => {
+      .then((yeastinfo: Ingredient) => {
         console.log(yeastinfo);
         refreshIngredients();
         resetFormInputs();
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
 
   const addAddtionalIngredients = () => {
-    const additionalIngredientName = document.querySelector(
+    const additionalIngredientName = (document.querySelector(
       ".form-for-adding-additions select"
-    ).value;
+    ) as HTMLSelectElement).value;
 
-    if (additionalIngredientName === "" || setAdditionalQuantity === "") {
+    if (additionalIngredientName === "" || additionalQuantity === "") {
       alert(
         "Please enter proper name and quantity for additional ingreadients"
       );
@@ -117,37 +137,37 @@ function InventoryPage({ allRecipes }) {
     }
 
     createIngredients(additionalIngredientName, additionalQuantity, "additions")
-      .then((additionalinfo) => {
+      .then((additionalinfo: Ingredient) => {
         console.log(additionalinfo);
         refreshIngredients();
         resetFormInputs();
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
 
-  const handleDelete = (ingredientId) => {
+  const handleDelete = (ingredientId: string) => {
     deleteIngredient(ingredientId)
-      .then((response) => {
+      .then(() => {
         setIngredients((prevIngredients) =>
           prevIngredients.filter(
             (ingredient) => ingredient._id !== ingredientId
           )
         );
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
 
   const refreshIngredients = () => {
     getAllIngredients()
-      .then((fetchedIngredients) => {
+      .then((fetchedIngredients: Ingredient[]) => {
         console.log(fetchedIngredients);
         setIngredients(fetchedIngredients);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         console.error("Error:", error);
       });
   };
