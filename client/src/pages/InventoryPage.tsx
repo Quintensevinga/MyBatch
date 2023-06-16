@@ -58,7 +58,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
       return;
     }
 
-    createIngredients(hopsName, parseInt(hopsQuantity), "hops")
+    createIngredients(hopsName, hopsQuantity, "hops")
       .then((hopsinfo) => {
         console.log(hopsinfo);
         refreshIngredients();
@@ -78,7 +78,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
       return;
     }
 
-    createIngredients(maltsName, parseInt(maltsQuantity), "malts")
+    createIngredients(maltsName, maltsQuantity, "malts")
       .then((maltsinfo) => {
         console.log(maltsinfo);
         refreshIngredients();
@@ -98,7 +98,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
       return;
     }
 
-    createIngredients(yeastName, parseInt(yeastQuantity), "yeast")
+    createIngredients(yeastName, yeastQuantity, "yeast")
       .then((yeastinfo) => {
         console.log(yeastinfo);
         refreshIngredients();

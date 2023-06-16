@@ -11,7 +11,7 @@ export const getAllIngredients = async () => {
   }
 };
 
-export const createIngredients = (ingName: string, ingAmount: number, ingType: string) =>
+export const createIngredients = (ingName: string, ingAmount: string, ingType: string) =>
   fetch(baseUrl, {
     method: "POST",
     mode: "cors",
