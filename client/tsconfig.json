@@ -102,6 +102,7 @@
     "jsx": "react"
   },
     "include": [
-      "src/pages/InventoryPage.tsx"
+      "src/**/*.tsx", 
+      "src/**/*.ts"
     ]
 }
