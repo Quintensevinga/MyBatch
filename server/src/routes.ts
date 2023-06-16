@@ -5,7 +5,7 @@ function routes(app: Express) {
     res.sendStatus(200);
   });
   app.get('/', function (req, res) {
-    res.send('MyBatch express is here');
+    res.send('MyBatch express is here ssnow');
   });
 
   app.get('/inventory', getAllIngredients);
