@@ -1,7 +1,6 @@
 import supertest from 'supertest';
-
-import { app } from '../../src/index';
-
+import { createServer } from '../server';
+const app = createServer();
 describe('Main route', () => {
   test('Get all', async () => {
     const res = await supertest(app).get('/heal');

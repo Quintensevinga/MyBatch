@@ -1,17 +1,12 @@
 import express, { Express, Request, Response } from 'express';
-import routes from './routes';
-export const app: Express = express();
+import { letConnect } from './models/db';
 const PORT = 3500;
 
-import cors from 'cors';
+import { createServer } from './server';
 
-app.use(cors({ origin: true }));
-app.use(express.json());
-
-app.listen(PORT, function () {
-  console.log('MyBatch server listening on port ' + PORT);
+letConnect().then(() => {
+  const app: Express = createServer(); // new
+  app.listen(PORT, () => {
+    console.log('Server has started!');
+  });
 });
-
-export const ToRoutes = () => {
-  routes(app);
-};
