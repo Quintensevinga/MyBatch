@@ -13,6 +13,15 @@ function routes(app: Express) {
   app.get('/test', async (req, res) => {
     res.json({ message: 'pass!' });
   });
+  app.post('/users', async (req, res) => {
+    const { password, username } = req.body;
+    if (!username || !password) {
+      res.sendStatus(400);
+      return;
+    }
+    res.send({ username, password });
+  });
+
   app.get('/inventory', getAllIngredients);
   app.post('/inventory', createIngredients);
   app.delete('/inventory/:id', deleteIngredient);

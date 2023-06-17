@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import { createServer } from '../server';
 import { beerRecipe, myRecipe, addIngredient } from '../models/models';
+import { disconnectDBForTesting } from '../models/db';
 
 beforeEach(async () => {
   await mongoose.connect('mongodb://127.0.0.1:27017/checking');
@@ -12,7 +13,7 @@ afterEach(async () => {
   await addIngredient.deleteMany();
   await beerRecipe.deleteMany();
   await myRecipe.deleteMany();
-  await mongoose.connection.close();
+  disconnectDBForTesting();
 });
 
 const app = createServer();
