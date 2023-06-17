@@ -1,15 +1,22 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import "./RecipesPages.css";
 import { postMyRecipe } from "../utils/ApiService";
+import { Recipe } from "../types";
 
-function MyRecipesPage({ myRecipes, allRecipes }) {
-  const [allMyRecipes, setMyRecipes] = useState([myRecipes]);
+interface MyRecipesPageProps {
+  myRecipes: Recipe[];
+  allRecipes: Recipe[];
+}
+
+const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) => {
+  const [allMyRecipes, setMyRecipes] = useState<Recipe[]>([...myRecipes]);
   const [recipeName, setRecipeName] = useState("");
   const [beerStyle, setBeerStyle] = useState("");
 
-  const allHops = new Set();
-  const allMalts = new Set();
-  const allYeast = new Set();
+  const allHops = new Set<string>();
+  const allMalts = new Set<string>();
+  const allYeast = new Set<string>();
 
   if (allRecipes) {
     allRecipes.forEach((recipe) => {
@@ -19,7 +26,7 @@ function MyRecipesPage({ myRecipes, allRecipes }) {
       recipe.ingredients.malts.forEach((malt) => {
         allMalts.add(malt.name);
       });
-      allYeast.add(recipe.ingredients.yeast);
+      allYeast.add(recipe.ingredients.yeast[0].name);
     });
   }
   const [instructions, setInstructions] = useState("");
@@ -29,14 +36,14 @@ function MyRecipesPage({ myRecipes, allRecipes }) {
   const [maltsQuantity, setMaltsQuantity] = useState("");
   const [yeastName, setYeastName] = useState("");
   const [yeastQuantity, setYeastQuantity] = useState("");
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   useEffect(() => {
-    setMyRecipes(myRecipes);
+    setMyRecipes([...myRecipes]);
   }, [myRecipes]);
   console.log(allMyRecipes);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const recipeData = {
       name: recipeName,
@@ -56,7 +63,7 @@ function MyRecipesPage({ myRecipes, allRecipes }) {
       console.log(err);
     }
   };
-  const handleRecipeClick = (recipe) => {
+  const handleRecipeClick = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
   };
 
@@ -182,7 +189,7 @@ function MyRecipesPage({ myRecipes, allRecipes }) {
                 <li
                   className="your-list-li"
                   key={recipe._id}
-                  onClick={() => setSelectedRecipe(recipe)}
+                  onClick={() => handleRecipeClick(recipe)}
                 >
                   <span className="my-recipe-name">
                     {recipe.name}
@@ -194,7 +201,7 @@ function MyRecipesPage({ myRecipes, allRecipes }) {
           </ul>
         </div>
       </div>
-      <div class="my-recipe-details">
+      <div className="my-recipe-details">
         <h1>Details</h1>
         {selectedRecipe && (
           <div>

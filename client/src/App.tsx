@@ -1,22 +1,28 @@
 import "./App.css";
+import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import InventoryPage from "./pages/InventoryPage";
 import OurRecipesPage from "./pages/OurRecipesPage";
-import HowToBrew from "./pages/HowToBrewPage";
 import MyRecipesPage from "./pages/MyRecipesPage";
 import Homepage from "./pages/HomePage";
 import { getOurRecipes, getMyRecipes } from "./utils/ApiService";
 import { useState, useEffect } from "react";
+import { Recipe } from './types';
 
-function App() {
-  const [allRecipes, setAllRecipes] = useState(null);
-  const [myRecipes, setMyRecipies] = useState([]);
+interface MyRecipesPageProps {
+  myRecipes: Recipe[];
+  allRecipes: Recipe[];
+} 
+
+const App: React.FC<MyRecipesPageProps> = () => {
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [myRecipes, setMyRecipies] = useState<Recipe[]>([]);
   useEffect(() => {
-    getOurRecipes().then((fetchedRecipes) => {
+    getOurRecipes().then((fetchedRecipes: Recipe[]) => {
       setAllRecipes(fetchedRecipes);
     });
-    getMyRecipes().then((fetchedMyRecipes) => {
+    getMyRecipes().then((fetchedMyRecipes: Recipe[]) => {
       setMyRecipies(fetchedMyRecipes);
     });
   }, []);

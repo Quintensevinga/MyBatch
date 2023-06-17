@@ -1,3 +1,5 @@
+import { Recipe } from "../types";
+
 const baseUrl = "http://localhost:3500/inventory";
 
 export const getAllIngredients = async () => {
@@ -9,7 +11,7 @@ export const getAllIngredients = async () => {
   }
 };
 
-export const createIngredients = (ingName, ingAmount, ingType) =>
+export const createIngredients = (ingName: string, ingAmount: string, ingType: string) =>
   fetch(baseUrl, {
     method: "POST",
     mode: "cors",
@@ -30,7 +32,7 @@ export async function getOurRecipes() {
   }
 }
 
-export async function deleteIngredient(ingredientId) {
+export async function deleteIngredient(ingredientId: string) {
   fetch("http://localhost:3500/inventory/" + ingredientId, {
     method: "DELETE",
     mode: "cors",
@@ -53,11 +55,11 @@ export const getMyRecipes = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error();
   }
 };
 
-export async function postMyRecipe(recipeData) {
+export async function postMyRecipe(recipeData: Recipe) {
   try {
     const response = await fetch("http://localhost:3500/my-recipes", {
       method: "POST",
