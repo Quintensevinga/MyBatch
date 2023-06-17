@@ -4,7 +4,7 @@ function routes(app: Express) {
   app.get('/heal', (req: Request, res: Response) => {
     res.sendStatus(200);
   });
-  app.get('/', function (req, res) {
+  app.get('/', function (req: Request, res: Response) {
     res.send('MyBatch express is here ssnow');
   });
 

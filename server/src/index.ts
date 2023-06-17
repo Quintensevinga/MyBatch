@@ -3,12 +3,15 @@ import routes from './routes';
 const app: Express = express();
 const PORT = 3500;
 
-const cors = require('cors');
+import cors from 'cors';
 
-app.use(cors());
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 app.listen(PORT, function () {
   console.log('MyBatch server listening on port ' + PORT);
-  routes(app);
 });
+
+export const ToRoutes = () => {
+  routes(app);
+};
