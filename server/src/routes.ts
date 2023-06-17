@@ -10,7 +10,9 @@ function routes(app: Express) {
     let users = ['Goon', 'Tsuki', 'Joe'];
     res.status(200).send(users);
   });
-
+  app.get('/test', async (req, res) => {
+    res.json({ message: 'pass!' });
+  });
   app.get('/inventory', getAllIngredients);
   app.post('/inventory', createIngredients);
   app.delete('/inventory/:id', deleteIngredient);
