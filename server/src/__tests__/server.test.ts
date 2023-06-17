@@ -11,6 +11,7 @@ beforeEach(async () => {
 afterEach(async () => {
   await addIngredient.deleteMany();
   await beerRecipe.deleteMany();
+  await myRecipe.deleteMany();
   await mongoose.connection.close();
 });
 
@@ -137,5 +138,95 @@ test('GET /ourrecipes', async () => {
       expect(response.body[0].name).toBe(ingredient.name);
       expect(response.body[0].style).toBe(ingredient.style);
       expect(response.body[0].description).toBe(ingredient.description);
+    });
+});
+
+test('GET /myrecipe', async () => {
+  const ingredient = await myRecipe.create({
+    name: 'English',
+    style: 'eng',
+    ingredients: {
+      hops: [
+        {
+          name: 'Saaz',
+          amount: '3',
+        },
+      ],
+      malts: [
+        {
+          name: 'Pilsner Malt',
+          amount: '232',
+        },
+      ],
+      yeast: [
+        {
+          name: 'Czech Lager',
+          amount: '232',
+        },
+      ],
+    },
+    instructions: 'English',
+  });
+
+  await supertest(app)
+    .get('/my-recipes')
+    .expect(200)
+    .then((response) => {
+      // Check the response type and length
+      expect(Array.isArray(response.body)).toBeTruthy();
+      expect(response.body.length).toEqual(1);
+
+      // Check the response data
+      expect(response.body[0]._id).toBe(ingredient.id);
+      expect(response.body[0].name).toBe(ingredient.name);
+      expect(response.body[0].style).toBe(ingredient.style);
+      expect(response.body[0].instructions).toBe(ingredient.instructions);
+    });
+});
+
+test('POST /myrecipes', async () => {
+  const data = {
+    name: 'English',
+    style: 'eng',
+    ingredients: {
+      hops: [
+        {
+          name: 'Saaz',
+          amount: '3',
+        },
+      ],
+      malts: [
+        {
+          name: 'Pilsner Malt',
+          amount: '232',
+        },
+      ],
+      yeast: [
+        {
+          name: 'Czech Lager',
+          amount: '232',
+        },
+      ],
+    },
+    instructions: 'English',
+  };
+
+  await supertest(app)
+    .post('/my-recipes')
+    .send(data)
+    .expect(201)
+    .then(async (response) => {
+      // Check the response
+      expect(response.body._id).toBeTruthy();
+      expect(response.body.name).toBe(data.name);
+      expect(response.body.style).toBe(data.style);
+      expect(response.body.instructions).toBe(data.instructions);
+
+      // Check the data in the database
+      const oneIngredient = await myRecipe.findOne({ _id: response.body._id });
+      expect(oneIngredient).toBeTruthy();
+      expect(oneIngredient?.name).toBe(data.name);
+      expect(oneIngredient?.style).toBe(data.style);
+      expect(oneIngredient?.instructions).toBe(data.instructions);
     });
 });
