@@ -1,11 +1,14 @@
 import { Express, Request, Response } from 'express';
+
 import { getAllIngredients, createIngredients, deleteIngredient, getOurRecipes, getMyRecipes, postMyRecipe } from './controllers';
+
 function routes(app: Express) {
   app.get('/heal', (req: Request, res: Response) => {
     res.sendStatus(200);
   });
-  app.get('/', function (req: Request, res: Response) {
-    res.send('MyBatch express is here ssnow');
+  app.get('/users', (req: Request, res: Response): void => {
+    let users = ['Goon', 'Tsuki', 'Joe'];
+    res.status(200).send(users);
   });
 
   app.get('/inventory', getAllIngredients);

@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import routes from './routes';
-const app: Express = express();
+export const app: Express = express();
 const PORT = 3500;
 
 import cors from 'cors';
