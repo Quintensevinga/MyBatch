@@ -1,16 +1,12 @@
 import React from 'react';
-import { useState, useEffect } from "react";
-import {
-  createIngredients,
-  getAllIngredients,
-  deleteIngredient,
-} from "../utils/ApiService";
-import "./InventoryPage.css";
-import { FaTrash } from "react-icons/fa";
-import { Recipe, Ingredient } from "../types";
+import { useState, useEffect } from 'react';
+import { createIngredients, getAllIngredients, deleteIngredient } from '../utils/ApiService';
+import './InventoryPage.css';
+import { FaTrash } from 'react-icons/fa';
+import { ourRecipe, Ingredient } from '../types';
 
 interface InventoryPageProps {
-  allRecipes: Recipe[];
+  allRecipes: ourRecipe[];
 }
 
 const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
@@ -28,10 +24,10 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
       recipe.ingredients.malts.forEach((malt) => {
         allMalts.add(malt.name);
       });
-      allYeast.add(recipe.ingredients.yeast[0].name);
+      allYeast.add(recipe.ingredients.yeast[0]);
     });
   }
-  
+
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   useEffect(() => {
     refreshIngredients();
@@ -50,62 +46,56 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
   };
 
   const addHops = () => {
-    const hopsName = (document.querySelector(
-      ".form-for-adding-hops select"
-    ) as HTMLSelectElement).value;
-    if (hopsName === "" || !hopsQuantity) {
-      alert("Please enter proper name and quantity for hops");
+    const hopsName = (document.querySelector('.form-for-adding-hops select') as HTMLSelectElement).value;
+    if (hopsName === '' || !hopsQuantity) {
+      alert('Please enter proper name and quantity for hops');
       return;
     }
 
-    createIngredients(hopsName, hopsQuantity, "hops")
+    createIngredients(hopsName, hopsQuantity, 'hops')
       .then((hopsinfo) => {
         console.log(hopsinfo);
         refreshIngredients();
         resetFormInputs();
       })
       .catch((error: Error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
   const addMalts = () => {
-    const maltsName = (document.querySelector(
-      ".form-for-adding-malts select"
-    ) as HTMLSelectElement).value;
-    if (maltsName === "" || !maltsQuantity) {
-      alert("Please enter proper name and quantity for malts");
+    const maltsName = (document.querySelector('.form-for-adding-malts select') as HTMLSelectElement).value;
+    if (maltsName === '' || !maltsQuantity) {
+      alert('Please enter proper name and quantity for malts');
       return;
     }
 
-    createIngredients(maltsName, maltsQuantity, "malts")
+    createIngredients(maltsName, maltsQuantity, 'malts')
       .then((maltsinfo) => {
         console.log(maltsinfo);
         refreshIngredients();
         resetFormInputs();
       })
       .catch((error: Error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
   const addYeast = () => {
-    const yeastName = (document.querySelector(
-      ".form-for-adding-yeast select"
-    ) as HTMLSelectElement).value;
-    if (yeastName === "" || !yeastQuantity) {
-      alert("Please enter proper name and quantity for yeast");
+    const yeastName = (document.querySelector('.form-for-adding-yeast select') as HTMLSelectElement).value;
+    if (yeastName === '' || !yeastQuantity) {
+      alert('Please enter proper name and quantity for yeast');
       return;
     }
 
-    createIngredients(yeastName, yeastQuantity, "yeast")
+    createIngredients(yeastName, yeastQuantity, 'yeast')
       .then((yeastinfo) => {
         console.log(yeastinfo);
         refreshIngredients();
         resetFormInputs();
       })
       .catch((error: Error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
@@ -115,7 +105,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
         setIngredients(data);
       })
       .catch((error: Error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
@@ -125,7 +115,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
         refreshIngredients();
       })
       .catch((error: Error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
@@ -145,12 +135,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
               </option>
             ))}
           </select>
-          <input
-            type="text"
-            placeholder="Quantity"
-            value={hopsQuantity}
-            onChange={(e) => setHopsQuantity(e.target.value)}
-          />
+          <input type="text" placeholder="Quantity" value={hopsQuantity} onChange={(e) => setHopsQuantity(e.target.value)} />
           <button onClick={addHops}>Add</button>
         </div>
         <div className="form-for-adding-malts">
@@ -164,12 +149,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
               </option>
             ))}
           </select>
-          <input
-            type="text"
-            placeholder="Quantity"
-            value={maltsQuantity}
-            onChange={(e) => setMaltsQuantity(e.target.value)}
-          />
+          <input type="text" placeholder="Quantity" value={maltsQuantity} onChange={(e) => setMaltsQuantity(e.target.value)} />
           <button onClick={addMalts}>Add</button>
         </div>
         <div className="form-for-adding-yeast">
@@ -183,21 +163,11 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
               </option>
             ))}
           </select>
-          <input
-            type="text"
-            placeholder="Quantity"
-            value={yeastQuantity}
-            onChange={(e) => setYeastQuantity(e.target.value)}
-          />
+          <input type="text" placeholder="Quantity" value={yeastQuantity} onChange={(e) => setYeastQuantity(e.target.value)} />
           <button onClick={addYeast}>Add</button>
         </div>
         <div className="form-for-adding-additional">
-          <input
-            type="text"
-            placeholder="Additional Ingredient"
-            value={additionalQuantity}
-            onChange={(e) => setAdditionalQuantity(e.target.value)}
-          />
+          <input type="text" placeholder="Additional Ingredient" value={additionalQuantity} onChange={(e) => setAdditionalQuantity(e.target.value)} />
           <button>Add</button>
         </div>
       </div>
@@ -207,10 +177,7 @@ const InventoryPage: React.FC<InventoryPageProps> = ({ allRecipes }) => {
           {ingredients.map((ingredient) => (
             <li key={ingredient._id}>
               {ingredient.name} - {ingredient.amount}
-              <FaTrash
-                className="delete-icon"
-                onClick={() => deleteIng(ingredient._id)}
-              />
+              <FaTrash className="delete-icon" onClick={() => deleteIng(ingredient._id)} />
             </li>
           ))}
         </ul>

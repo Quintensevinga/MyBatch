@@ -1,18 +1,33 @@
 import React from 'react';
-import { useEffect, useState } from "react";
-import "./RecipesPages.css";
-import { postMyRecipe } from "../utils/ApiService";
-import { Recipe } from "../types";
+import { useEffect, useState } from 'react';
+import './RecipesPages.css';
+import { postMyRecipe } from '../utils/ApiService';
+import { ourRecipe, myRecipe } from '../types';
 
 interface MyRecipesPageProps {
-  myRecipes: Recipe[];
-  allRecipes: Recipe[];
+  myRecipes: myRecipe[];
+  allRecipes: ourRecipe[];
 }
 
+interface ingredientsAr {
+  name: string;
+  amount: string;
+}
+
+export interface postRecipeType {
+  name: string;
+  style: string;
+  ingredients: {
+    hops: ingredientsAr[];
+    malts: ingredientsAr[];
+    yeast: ingredientsAr[];
+  };
+  instructions: string;
+}
 const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) => {
-  const [allMyRecipes, setMyRecipes] = useState<Recipe[]>([...myRecipes]);
-  const [recipeName, setRecipeName] = useState("");
-  const [beerStyle, setBeerStyle] = useState("");
+  const [allMyRecipes, setMyRecipes] = useState<myRecipe[]>([...myRecipes]);
+  const [recipeName, setRecipeName] = useState('');
+  const [beerStyle, setBeerStyle] = useState('');
 
   const allHops = new Set<string>();
   const allMalts = new Set<string>();
@@ -26,17 +41,17 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       recipe.ingredients.malts.forEach((malt) => {
         allMalts.add(malt.name);
       });
-      allYeast.add(recipe.ingredients.yeast[0].name);
+      allYeast.add(recipe.ingredients.yeast[0]);
     });
   }
-  const [instructions, setInstructions] = useState("");
-  const [hopsName, setHopsName] = useState("");
-  const [hopsQuantity, setHopsQuantity] = useState("");
-  const [maltsName, setMaltsName] = useState("");
-  const [maltsQuantity, setMaltsQuantity] = useState("");
-  const [yeastName, setYeastName] = useState("");
-  const [yeastQuantity, setYeastQuantity] = useState("");
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [instructions, setInstructions] = useState('');
+  const [hopsName, setHopsName] = useState('');
+  const [hopsQuantity, setHopsQuantity] = useState('');
+  const [maltsName, setMaltsName] = useState('');
+  const [maltsQuantity, setMaltsQuantity] = useState('');
+  const [yeastName, setYeastName] = useState('');
+  const [yeastQuantity, setYeastQuantity] = useState('');
+  const [selectedRecipe, setSelectedRecipe] = useState<myRecipe | null>(null);
 
   useEffect(() => {
     setMyRecipes([...myRecipes]);
@@ -45,7 +60,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const recipeData = {
+    const postRecipe: postRecipeType = {
       name: recipeName,
       style: beerStyle,
       instructions: instructions,
@@ -56,14 +71,14 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       },
     };
     try {
-      const savedRecipe = await postMyRecipe(recipeData);
+      const savedRecipe = await postMyRecipe(postRecipe);
       console.log(savedRecipe);
       setMyRecipes((prevRecipes) => [...prevRecipes, savedRecipe]);
     } catch (err) {
       console.log(err);
     }
   };
-  const handleRecipeClick = (recipe: Recipe) => {
+  const handleRecipeClick = (recipe: myRecipe) => {
     setSelectedRecipe(recipe);
   };
 
@@ -71,9 +86,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
     <div className="container">
       <div className="first-half">
         <div className="my-recipes-form">
-          <h2 style={{ fontFamily: "cursive" }}>
-            Release creativity, create your own recipe
-          </h2>
+          <h2 style={{ fontFamily: 'cursive' }}>Release creativity, create your own recipe</h2>
           {/* Form */}
           <form onSubmit={handleSubmit} className="new-recipe-form">
             <div className="left-side">
@@ -116,11 +129,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
             <div className="right-side">
               <h3>Ingredients</h3>
               <label>Hops</label>
-              <select
-                value={hopsName}
-                onChange={(e) => setHopsName(e.target.value)}
-                required
-              >
+              <select value={hopsName} onChange={(e) => setHopsName(e.target.value)} required>
                 <option></option>
                 {Array.from(allHops).map((hop) => (
                   <option key={hop} value={hop}>
@@ -129,19 +138,10 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 ))}
               </select>
               <label>Qty</label>
-              <input
-                type="text"
-                value={hopsQuantity}
-                onChange={(e) => setHopsQuantity(e.target.value)}
-                required
-              ></input>
+              <input type="text" value={hopsQuantity} onChange={(e) => setHopsQuantity(e.target.value)} required></input>
               <br />
               <label>Malts</label>
-              <select
-                value={maltsName}
-                onChange={(e) => setMaltsName(e.target.value)}
-                required
-              >
+              <select value={maltsName} onChange={(e) => setMaltsName(e.target.value)} required>
                 <option></option>
                 {Array.from(allMalts).map((malt) => (
                   <option key={malt} value={malt}>
@@ -150,19 +150,10 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 ))}
               </select>
               <label>Qty</label>
-              <input
-                type="text"
-                value={maltsQuantity}
-                onChange={(e) => setMaltsQuantity(e.target.value)}
-                required
-              ></input>
+              <input type="text" value={maltsQuantity} onChange={(e) => setMaltsQuantity(e.target.value)} required></input>
               <br />
               <label>Yeast</label>
-              <select
-                value={yeastName}
-                onChange={(e) => setYeastName(e.target.value)}
-                required
-              >
+              <select value={yeastName} onChange={(e) => setYeastName(e.target.value)} required>
                 <option></option>
                 {Array.from(allYeast).map((yeast) => (
                   <option key={yeast} value={yeast}>
@@ -171,12 +162,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 ))}
               </select>
               <label>Qty</label>
-              <input
-                type="text"
-                value={yeastQuantity}
-                onChange={(e) => setYeastQuantity(e.target.value)}
-                required
-              ></input>
+              <input type="text" value={yeastQuantity} onChange={(e) => setYeastQuantity(e.target.value)} required></input>
             </div>
           </form>
           {/* Form */}
@@ -185,12 +171,8 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
           <h2>Your recipe list</h2>
           <ul className="my-recipes">
             {allMyRecipes &&
-              allMyRecipes.map((recipe) => (
-                <li
-                  className="your-list-li"
-                  key={recipe._id}
-                  onClick={() => handleRecipeClick(recipe)}
-                >
+              allMyRecipes.map((recipe: myRecipe) => (
+                <li className="your-list-li" key={recipe._id} onClick={() => handleRecipeClick(recipe)}>
                   <span className="my-recipe-name">
                     {recipe.name}
                     <br />
@@ -206,7 +188,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
         {selectedRecipe && (
           <div>
             <h2>
-              {selectedRecipe.name}({selectedRecipe.style})
+              {selectedRecipe?.name}({selectedRecipe?.style})
             </h2>
 
             <h3>Ingredients:</h3>
@@ -222,8 +204,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 </li>
               ))}
               <li>
-                Yeast: {selectedRecipe.ingredients.yeast[0].name},{" "}
-                {selectedRecipe.ingredients.yeast[0].amount}
+                Yeast: {selectedRecipe.ingredients.yeast[0].name}, {selectedRecipe.ingredients.yeast[0].amount}
               </li>
             </ul>
             <h3>Instructions:</h3>
@@ -233,6 +214,6 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       </div>
     </div>
   );
-}
+};
 
 export default MyRecipesPage;
