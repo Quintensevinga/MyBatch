@@ -23,7 +23,7 @@ const OurRecipesPage: React.FC<OurRecipesPageProps> = ({ allRecipes }) => {
         {ourRecipes && (
           <ul className="ourRecipes">
             {allRecipes.map((recipe) => (
-              <li key={recipe._id} onClick={() => handleRecipeClick(recipe)} className={selectedRecipe ? 'active-recipe' : ''}>
+              <li key={recipe._id} onClick={() => handleRecipeClick(recipe)} className={selectedRecipe === recipe ? 'active-recipe' : ''}>
                 <h3>{recipe.name}</h3>
                 <p>{recipe.description}</p>
               </li>
