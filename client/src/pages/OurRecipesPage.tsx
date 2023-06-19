@@ -11,7 +11,7 @@ const OurRecipesPage: React.FC<OurRecipesPageProps> = ({ allRecipes }) => {
   const ourRecipes = allRecipes;
 
   const [selectedRecipe, setSelectedRecipe] = useState<ourRecipe | null>(null);
-
+  console.log(selectedRecipe);
   const handleRecipeClick = (recipe: ourRecipe) => {
     setSelectedRecipe(recipe);
   };

@@ -62,7 +62,7 @@
   justify-content: space-around;
 }
 .first-half {
-  width: 45%;
+  width: 55%;
   height: 100%;
 }
 
@@ -74,14 +74,14 @@
 .my-recipes-form {
   border: 2px solid #fbb117;
   padding: 10px 15px;
-  height: 450px;
+  height: 500px;
   margin-bottom: 40px;
   border-radius: 12px;
   position: relative;
 }
 .my-recipe-list {
   border: 2px solid #fbb117;
-  height: 250px;
+  height: 300px;
   padding: 10px 20px;
   border-radius: 12px;
 }
@@ -102,13 +102,13 @@
   text-align: center;
 }
 .create-recipe-btn {
-  position: absolute;
   padding: 10px 25px;
   font-size: 16px;
   background-color: #fb8b17;
   color: white;
-  top: 75%;
-  left: 65%;
+  display: flex;
+  display-direction: column;
+
   border-radius: 9px;
 }
 
@@ -137,9 +137,11 @@
 
 .your-list-li {
   list-style-type: none;
+  width: 100%;
   font-size: 20px;
   margin-top: 10px;
   border-bottom: 1px solid white;
+  position: relative;
 }
 .your-list-li:hover {
   cursor: pointer;
@@ -150,6 +152,8 @@
 }
 .my-recipe-style {
   font-style: oblique;
+  display: flex;
+  justify: space-between;
 }
 
 .my-recipe-details h1 {
@@ -166,4 +170,15 @@ h3 {
 p {
   list-style-type: none;
   font-size: 130%;
+}
+
+.deleteB {
+  margin-left: 20px;
+}
+
+.deleteI {
+  height: 15px;
+  width: 25px;
+  position: absolute;
+  right: 0;
 }

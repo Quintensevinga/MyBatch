@@ -1,6 +1,6 @@
 import { Express, Request, Response } from 'express';
 
-import { getAllIngredients, createIngredients, deleteIngredient, getOurRecipes, getMyRecipes, postMyRecipe } from './controllers';
+import { getAllIngredients, createIngredients, deleteIngredient, getOurRecipes, getMyRecipes, postMyRecipe, deleteRecipe } from './controllers';
 
 function routes(app: Express) {
   app.get('/health', (req: Request, res: Response) => {
@@ -28,6 +28,7 @@ function routes(app: Express) {
   app.get('/our-recipes', getOurRecipes);
   app.get('/my-recipes', getMyRecipes);
   app.post('/my-recipes', postMyRecipe);
+  app.delete('/my-recipes/:id', deleteRecipe);
 }
 
 export default routes;

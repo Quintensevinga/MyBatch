@@ -79,4 +79,17 @@ const postMyRecipe = async (req: Request, res: Response) => {
   }
 };
 
-export { postMyRecipe, getMyRecipes, getOurRecipes, deleteIngredient, createIngredients, getAllIngredients };
+const deleteRecipe = async (req: Request, res: Response) => {
+  try {
+    const recipeId = req.params.id;
+    const recipe = await myRecipe.findById(recipeId);
+    await recipe.deleteOne({ _id: recipeId });
+    console.log('Item deleted');
+    res.status(200).json({ success: true, message: 'Ingredient deleted successfully' });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error: 'Failed to delete ingredient' });
+  }
+};
+
+export { postMyRecipe, getMyRecipes, getOurRecipes, deleteIngredient, createIngredients, getAllIngredients, deleteRecipe };

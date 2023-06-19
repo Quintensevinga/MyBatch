@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import './RecipesPages.css';
 import { postMyRecipe } from '../utils/ApiService';
 import { ourRecipe, myRecipe } from '../types';
-
+import { FaTrash } from 'react-icons/fa';
+import { deleteRecipe } from '../utils/ApiService';
 interface MyRecipesPageProps {
   myRecipes: myRecipe[];
   allRecipes: ourRecipe[];
@@ -41,7 +42,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       recipe.ingredients.malts.forEach((malt) => {
         allMalts.add(malt.name);
       });
-      allYeast.add(recipe.ingredients.yeast[0]);
+      allYeast.add(recipe.ingredients.yeast);
     });
   }
   const [instructions, setInstructions] = useState('');
@@ -80,6 +81,16 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
   };
   const handleRecipeClick = (recipe: myRecipe) => {
     setSelectedRecipe(recipe);
+  };
+
+  const handleDelete = (Id: string) => {
+    deleteRecipe(Id)
+      .then((response) => {
+        setMyRecipes((prevRecipe) => prevRecipe.filter((recipe) => recipe._id !== Id));
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   return (
@@ -161,6 +172,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                   </option>
                 ))}
               </select>
+              <br />
               <label>Qty</label>
               <input type="text" value={yeastQuantity} onChange={(e) => setYeastQuantity(e.target.value)} required></input>
             </div>
@@ -177,7 +189,13 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                     {recipe.name}
                     <br />
                   </span>
-                  <span className="my-recipe-style">{recipe.style}</span>
+                  <span className="my-recipe-style">
+                    {recipe.style}
+
+                    <button className="deleteB" onClick={() => handleDelete(recipe._id)}>
+                      <FaTrash className="deleteI" />
+                    </button>
+                  </span>
                 </li>
               ))}
           </ul>

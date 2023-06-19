@@ -73,3 +73,17 @@ export async function postMyRecipe(recipeData: postRecipeType) {
     console.log(err);
   }
 }
+
+export async function deleteRecipe(recipeId: string) {
+  fetch('http://localhost:3500/my-recipes/' + recipeId, {
+    method: 'DELETE',
+    mode: 'cors',
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+}
