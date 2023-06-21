@@ -47,7 +47,11 @@ describe('template spec', () => {
 
     cy.get('[data-testid=yeast-qty]').type('3');
     cy.get('[data-testid=create-recipe').click();
-    cy.get('.your-list-li').last().click();
+    cy.get('.your-list-li').click();
+    cy.get('.my-recipe-details-info').should('be.visible');
+    cy.contains('Ingredients').should('be.visible');
+    cy.contains('Instructions:').should('be.visible');
+    cy.contains('Yeast').should('be.visible');
     cy.get('[data-testid=delete-recipe').last().click();
     cy.reload();
   });
