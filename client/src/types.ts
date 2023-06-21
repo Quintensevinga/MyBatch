@@ -18,13 +18,13 @@ export interface Ingredient {
 // }
 
 // interface our Recipes
-export interface malt {
+export interface Malt {
   _id: string;
   name: string;
   amount: string;
 }
 
-export interface hopsi {
+export interface Hopsi {
   _id: string;
   name: string;
   amount: string;
@@ -36,21 +36,21 @@ export interface hopsi {
 //   yeast: string;
 // }
 
-export interface ingredients {
-  malts: malt;
-  hops: hopsi;
+export interface Ingredients {
+  malts: Malt;
+  hops: Hopsi;
   yeast: string;
 }
 
-export interface ourRecipe {
+export interface OurRecipe {
   _id: string;
   name: string;
   style: string;
   description: string;
   batchSize: string;
   ingredients: {
-    malts: malt[];
-    hops: hopsi[];
+    malts: Malt[];
+    hops: Hopsi[];
     yeast: string;
   };
   instructions: string[];
@@ -63,13 +63,13 @@ export interface ourRecipe {
 //   amount: string;
 //   type: string;
 // }
-export interface myRecipe {
+export interface MyRecipe {
   _id: string;
   name: string;
   style: string;
   ingredients: {
-    hops: hopsi[];
-    malts: malt[];
+    hops: Hopsi[];
+    malts: Malt[];
     yeast: Ingredient[];
   };
   instructions: string[];

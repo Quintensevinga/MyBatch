@@ -2,31 +2,31 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import './RecipesPages.css';
 import { postMyRecipe } from '../utils/ApiService';
-import { ourRecipe, myRecipe } from '../types';
+import { OurRecipe, MyRecipe } from '../types';
 import { FaTrash } from 'react-icons/fa';
 import { deleteRecipe } from '../utils/ApiService';
 interface MyRecipesPageProps {
-  myRecipes: myRecipe[];
-  allRecipes: ourRecipe[];
+  myRecipes: MyRecipe[];
+  allRecipes: OurRecipe[];
 }
 
-interface ingredientsAr {
+interface IngredientsAr {
   name: string;
   amount: string;
 }
 
-export interface postRecipeType {
+export interface PostRecipeType {
   name: string;
   style: string;
   ingredients: {
-    hops: ingredientsAr[];
-    malts: ingredientsAr[];
-    yeast: ingredientsAr[];
+    hops: IngredientsAr[];
+    malts: IngredientsAr[];
+    yeast: IngredientsAr[];
   };
   instructions: string;
 }
 const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) => {
-  const [allMyRecipes, setMyRecipes] = useState<myRecipe[]>([...myRecipes]);
+  const [allMyRecipes, setMyRecipes] = useState<MyRecipe[]>([...myRecipes]);
   const [recipeName, setRecipeName] = useState('');
   const [beerStyle, setBeerStyle] = useState('');
 
@@ -52,7 +52,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
   const [maltsQuantity, setMaltsQuantity] = useState('');
   const [yeastName, setYeastName] = useState('');
   const [yeastQuantity, setYeastQuantity] = useState('');
-  const [selectedRecipe, setSelectedRecipe] = useState<myRecipe | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<MyRecipe | null>(null);
 
   useEffect(() => {
     setMyRecipes([...myRecipes]);
@@ -61,7 +61,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const postRecipe: postRecipeType = {
+    const postRecipe: PostRecipeType = {
       name: recipeName,
       style: beerStyle,
       instructions: instructions,
@@ -79,7 +79,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       console.log(err);
     }
   };
-  const handleRecipeClick = (recipe: myRecipe) => {
+  const handleRecipeClick = (recipe: MyRecipe) => {
     setSelectedRecipe(recipe);
   };
 
@@ -99,11 +99,12 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
         <div className="my-recipes-form">
           <h2 style={{ fontFamily: 'cursive' }}>Release creativity, create your own recipe</h2>
           {/* Form */}
-          <form onSubmit={handleSubmit} className="new-recipe-form">
+          <form data-testid="on-submit" onSubmit={handleSubmit} className="new-recipe-form">
             <div className="left-side">
               <label>Name</label>
               <br />
               <input
+                data-testid="recipe-name"
                 type="text"
                 value={recipeName}
                 onChange={(e) => {
@@ -115,6 +116,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
               <label>Beer Style</label>
               <br />
               <input
+                data-testid="beer-style"
                 type="text"
                 value={beerStyle}
                 onChange={(e) => {
@@ -126,6 +128,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
               <label>Add Your Instructions here</label>
               <br />
               <textarea
+                data-testid="text-area"
                 value={instructions}
                 onChange={(e) => {
                   setInstructions(e.target.value);
@@ -133,14 +136,14 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 required
               ></textarea>
               <br />
-              <button type="submit" className="create-recipe-btn">
+              <button data-testid="create-recipe" type="submit" className="create-recipe-btn">
                 Create Recipe
               </button>
             </div>
             <div className="right-side">
               <h3>Ingredients</h3>
               <label>Hops</label>
-              <select value={hopsName} onChange={(e) => setHopsName(e.target.value)} required>
+              <select data-testid="select-hops" value={hopsName} onChange={(e) => setHopsName(e.target.value)} required>
                 <option></option>
                 {Array.from(allHops).map((hop) => (
                   <option key={hop} value={hop}>
@@ -149,10 +152,10 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 ))}
               </select>
               <label>Qty</label>
-              <input type="text" value={hopsQuantity} onChange={(e) => setHopsQuantity(e.target.value)} required></input>
+              <input data-testid="hops-qty" type="text" value={hopsQuantity} onChange={(e) => setHopsQuantity(e.target.value)} required></input>
               <br />
               <label>Malts</label>
-              <select value={maltsName} onChange={(e) => setMaltsName(e.target.value)} required>
+              <select data-testid="select-malts" value={maltsName} onChange={(e) => setMaltsName(e.target.value)} required>
                 <option></option>
                 {Array.from(allMalts).map((malt) => (
                   <option key={malt} value={malt}>
@@ -161,10 +164,10 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                 ))}
               </select>
               <label>Qty</label>
-              <input type="text" value={maltsQuantity} onChange={(e) => setMaltsQuantity(e.target.value)} required></input>
+              <input data-testid="malts-qty" type="text" value={maltsQuantity} onChange={(e) => setMaltsQuantity(e.target.value)} required></input>
               <br />
               <label>Yeast</label>
-              <select value={yeastName} onChange={(e) => setYeastName(e.target.value)} required>
+              <select data-testid="select-yeasts" value={yeastName} onChange={(e) => setYeastName(e.target.value)} required>
                 <option></option>
                 {Array.from(allYeast).map((yeast) => (
                   <option key={yeast} value={yeast}>
@@ -174,7 +177,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
               </select>
               <br />
               <label>Qty</label>
-              <input type="text" value={yeastQuantity} onChange={(e) => setYeastQuantity(e.target.value)} required></input>
+              <input data-testid="yeast-qty" type="text" value={yeastQuantity} onChange={(e) => setYeastQuantity(e.target.value)} required></input>
             </div>
           </form>
           {/* Form */}
@@ -183,7 +186,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
           <h2>Your recipe list</h2>
           <ul className="my-recipes">
             {allMyRecipes &&
-              allMyRecipes.map((recipe: myRecipe) => (
+              allMyRecipes.map((recipe: MyRecipe) => (
                 <li className="your-list-li" key={recipe._id} onClick={() => handleRecipeClick(recipe)}>
                   <span className="my-recipe-name">
                     {recipe.name}
@@ -192,7 +195,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
                   <span className="my-recipe-style">
                     {recipe.style}
 
-                    <button className="deleteB" onClick={() => handleDelete(recipe._id)}>
+                    <button data-testid="delete-recipe" className="deleteB" onClick={() => handleDelete(recipe._id)}>
                       <FaTrash className="deleteI" />
                     </button>
                   </span>
@@ -204,7 +207,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       <div className="my-recipe-details">
         <h1>Details</h1>
         {selectedRecipe && (
-          <div>
+          <div className="my-recipe-details-info">
             <h2>
               {selectedRecipe?.name}({selectedRecipe?.style})
             </h2>

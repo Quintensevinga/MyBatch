@@ -1,10 +1,10 @@
-import { postRecipeType } from '../pages/MyRecipesPage';
+import { PostRecipeType } from '../pages/MyRecipesPage';
 
-const baseUrl = 'http://localhost:3500/inventory';
+const baseUrl = 'http://localhost:3500';
 
 export const getAllIngredients = async () => {
   try {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl + '/inventory');
     return response.json();
   } catch (error) {
     console.log(error);
@@ -12,7 +12,7 @@ export const getAllIngredients = async () => {
 };
 
 export const createIngredients = (ingName: string, ingAmount: string, ingType: string) =>
-  fetch(baseUrl, {
+  fetch(baseUrl + '/inventory', {
     method: 'POST',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
@@ -25,10 +25,17 @@ export const createIngredients = (ingName: string, ingAmount: string, ingType: s
 
 export async function getOurRecipes() {
   try {
-    const response = await fetch('http://localhost:3500/our-recipes');
+    const response = await fetch(baseUrl + '/our-recipes');
+    if (!response.ok) {
+      throw new Error('Failed to fetch');
+    }
     return response.json();
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    if (error instanceof TypeError && error.message.includes('API key')) {
+      console.error('Invalid API key:', error);
+    } else {
+      console.error('There was a problem with the Fetch operation:', error);
+    }
   }
 }
 
@@ -55,11 +62,15 @@ export const getMyRecipes = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error();
+    if (error instanceof TypeError && error.message.includes('API key')) {
+      console.error('Invalid API key:', error);
+    } else {
+      console.error('There was a problem with the Fetch operation:', error);
+    }
   }
 };
 
-export async function postMyRecipe(recipeData: postRecipeType) {
+export async function postMyRecipe(recipeData: PostRecipeType) {
   try {
     const response = await fetch('http://localhost:3500/my-recipes', {
       method: 'POST',
