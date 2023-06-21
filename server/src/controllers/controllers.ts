@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-const { beerRecipe, addIngredient, myRecipe } = require('./models/models');
+const { beerRecipe, addIngredient, myRecipe } = require('../models/models');
 
 const getAllIngredients = async (req: Request, res: Response) => {
   try {

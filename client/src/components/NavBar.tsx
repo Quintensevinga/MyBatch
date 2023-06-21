@@ -3,6 +3,12 @@ import { NavLink, useLocation } from 'react-router-dom';
 function NavBar() {
   const location = useLocation();
 
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
+  if (isAuthPage) {
+    return null; 
+  }
+
   return (
     <nav className="mainNav">
       <ul>

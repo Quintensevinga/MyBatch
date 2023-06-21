@@ -1,12 +1,16 @@
 import { Express, Request, Response } from 'express';
-import { getAllIngredients, createIngredients, deleteIngredient, getOurRecipes, getMyRecipes, postMyRecipe, deleteRecipe } from './controllers';
+import { getAllIngredients, createIngredients, deleteIngredient, getOurRecipes, getMyRecipes, postMyRecipe, deleteRecipe } from './controllers/controllers';
+import { loginHandler, registerHandler } from './controllers/authControllers';
 import authMiddleware from './middlewares/auth';
 
 function routes(app: Express) {
-  app.get('/inventory', authMiddleware, getAllIngredients);
+  app.post('/api/login', loginHandler);
+  app.post('/api/register', registerHandler);
+
+  app.get('/inventory', getAllIngredients);
   app.post('/inventory', authMiddleware, createIngredients);
   app.delete('/inventory/:id', authMiddleware, deleteIngredient);
-  app.get('/our-recipes', authMiddleware, getOurRecipes);
+  app.get('/our-recipes', getOurRecipes);
   app.get('/my-recipes', authMiddleware, getMyRecipes);
   app.post('/my-recipes', authMiddleware, postMyRecipe);
   app.delete('/my-recipes/:id', authMiddleware, deleteRecipe);
