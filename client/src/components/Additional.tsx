@@ -26,7 +26,7 @@ const Additional: React.FC<AdditionalPageProps> = ({
             ingredient.type === 'additions' ? (
               <li key={ingredient._id}>
                 {ingredient.name} {ingredient.amount}
-                <button className="deleteButton" onClick={() => handleDelete(ingredient._id)}>
+                <button data-testid="delitem" className="deleteButton" onClick={() => handleDelete(ingredient._id)}>
                   <FaTrash className="deleteIcon" />
                 </button>
               </li>
@@ -34,7 +34,7 @@ const Additional: React.FC<AdditionalPageProps> = ({
           )}
         </ul>
         <div className="form-for-adding-additions forms">
-          <select>
+          <select className="additonalIng">
             <option></option>
             <option value="Cinnamon Stick">Cinnamon Stick</option>
             <option value="Ginger Root">Ginger Root</option>
@@ -51,6 +51,7 @@ const Additional: React.FC<AdditionalPageProps> = ({
           ></input>
           <br />
           <button
+            className="fortest"
             onClick={() =>
               addIN(document.querySelector('.form-for-adding-additions select') as HTMLInputElement | null, additionalQuantity, 'additions')
             }

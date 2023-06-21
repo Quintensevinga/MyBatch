@@ -30,7 +30,7 @@ const Malts: React.FC<MaltsPageProps> = ({ allMalts, addIN, maltsQuantity, setMa
         </ul>
 
         <div className="form-for-adding-malts forms">
-          <select>
+          <select className="find-malts" required>
             <option></option>
             {Array.from(allMalts).map((malt) => (
               <option key={malt} value={malt}>
@@ -48,7 +48,10 @@ const Malts: React.FC<MaltsPageProps> = ({ allMalts, addIN, maltsQuantity, setMa
             }}
           ></input>
           <br />
-          <button onClick={() => addIN(document.querySelector('.form-for-adding-malts select') as HTMLInputElement | null, maltsQuantity, 'malts')}>
+          <button
+            className="malt-test"
+            onClick={() => addIN(document.querySelector('.form-for-adding-malts select') as HTMLInputElement | null, maltsQuantity, 'malts')}
+          >
             Add
           </button>
         </div>
