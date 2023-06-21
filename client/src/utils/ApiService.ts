@@ -1,6 +1,6 @@
-import { Recipe } from "../types";
+import { postRecipeType } from '../pages/MyRecipesPage';
 
-const baseUrl = "http://localhost:3500/inventory";
+const baseUrl = 'http://localhost:3500/inventory';
 
 export const getAllIngredients = async () => {
   try {
@@ -13,9 +13,9 @@ export const getAllIngredients = async () => {
 
 export const createIngredients = (ingName: string, ingAmount: string, ingType: string) =>
   fetch(baseUrl, {
-    method: "POST",
-    mode: "cors",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: ingName,
       amount: ingAmount,
@@ -25,7 +25,7 @@ export const createIngredients = (ingName: string, ingAmount: string, ingType: s
 
 export async function getOurRecipes() {
   try {
-    const response = await fetch("http://localhost:3500/our-recipes");
+    const response = await fetch('http://localhost:3500/our-recipes');
     return response.json();
   } catch (err) {
     console.log(err);
@@ -33,24 +33,24 @@ export async function getOurRecipes() {
 }
 
 export async function deleteIngredient(ingredientId: string) {
-  fetch("http://localhost:3500/inventory/" + ingredientId, {
-    method: "DELETE",
-    mode: "cors",
+  fetch('http://localhost:3500/inventory/' + ingredientId, {
+    method: 'DELETE',
+    mode: 'cors',
   })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
     })
     .catch((error) => {
-      console.error("Error:", error);
+      console.error('Error:', error);
     });
 }
 
 export const getMyRecipes = async () => {
   try {
-    const response = await fetch("http://localhost:3500/my-recipes");
+    const response = await fetch('http://localhost:3500/my-recipes');
     if (!response.ok) {
-      throw new Error("Failed to fetch recipes");
+      throw new Error('Failed to fetch recipes');
     }
     const data = await response.json();
     return data;
@@ -59,12 +59,12 @@ export const getMyRecipes = async () => {
   }
 };
 
-export async function postMyRecipe(recipeData: Recipe) {
+export async function postMyRecipe(recipeData: postRecipeType) {
   try {
-    const response = await fetch("http://localhost:3500/my-recipes", {
-      method: "POST",
+    const response = await fetch('http://localhost:3500/my-recipes', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(recipeData),
     });
@@ -72,4 +72,18 @@ export async function postMyRecipe(recipeData: Recipe) {
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function deleteRecipe(recipeId: string) {
+  fetch('http://localhost:3500/my-recipes/' + recipeId, {
+    method: 'DELETE',
+    mode: 'cors',
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }

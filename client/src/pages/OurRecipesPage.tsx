@@ -1,30 +1,29 @@
-import { getOurRecipes } from "../utils/ApiService";
-import { useState, useEffect } from "react";
-import "./RecipesPages.css";
+import { getOurRecipes } from '../utils/ApiService';
+import { useState, useEffect } from 'react';
+import './RecipesPages.css';
+import { ourRecipe } from '../types';
 
-function OurRecipesPage({ allRecipes }) {
+interface OurRecipesPageProps {
+  allRecipes: ourRecipe[];
+}
+
+const OurRecipesPage: React.FC<OurRecipesPageProps> = ({ allRecipes }) => {
   const ourRecipes = allRecipes;
 
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
-
-  const handleRecipeClick = (recipe) => {
+  const [selectedRecipe, setSelectedRecipe] = useState<ourRecipe | null>(null);
+  console.log(selectedRecipe);
+  const handleRecipeClick = (recipe: ourRecipe) => {
     setSelectedRecipe(recipe);
   };
 
   return (
     <div className="our-recipes ">
       <div className="recipe-list contaners">
-        <h2 style={{ fontFamily: "cursive" }}>
-          Here are some one our most popular recipes
-        </h2>
+        <h2 style={{ fontFamily: 'cursive' }}>Here are some one our most popular recipes</h2>
         {ourRecipes && (
           <ul className="ourRecipes">
             {allRecipes.map((recipe) => (
-              <li
-                key={recipe._id}
-                onClick={() => handleRecipeClick(recipe)}
-                className={selectedRecipe === recipe ? "active-recipe" : ""}
-              >
+              <li key={recipe._id} onClick={() => handleRecipeClick(recipe)} className={selectedRecipe === recipe ? 'active-recipe' : ''}>
                 <h3>{recipe.name}</h3>
                 <p>{recipe.description}</p>
               </li>
@@ -67,6 +66,6 @@ function OurRecipesPage({ allRecipes }) {
       </div>
     </div>
   );
-}
+};
 
 export default OurRecipesPage;
