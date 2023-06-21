@@ -2,31 +2,31 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import './RecipesPages.css';
 import { postMyRecipe } from '../utils/ApiService';
-import { ourRecipe, myRecipe } from '../types';
+import { OurRecipe, MyRecipe } from '../types';
 import { FaTrash } from 'react-icons/fa';
 import { deleteRecipe } from '../utils/ApiService';
 interface MyRecipesPageProps {
-  myRecipes: myRecipe[];
-  allRecipes: ourRecipe[];
+  myRecipes: MyRecipe[];
+  allRecipes: OurRecipe[];
 }
 
-interface ingredientsAr {
+interface IngredientsAr {
   name: string;
   amount: string;
 }
 
-export interface postRecipeType {
+export interface PostRecipeType {
   name: string;
   style: string;
   ingredients: {
-    hops: ingredientsAr[];
-    malts: ingredientsAr[];
-    yeast: ingredientsAr[];
+    hops: IngredientsAr[];
+    malts: IngredientsAr[];
+    yeast: IngredientsAr[];
   };
   instructions: string;
 }
 const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) => {
-  const [allMyRecipes, setMyRecipes] = useState<myRecipe[]>([...myRecipes]);
+  const [allMyRecipes, setMyRecipes] = useState<MyRecipe[]>([...myRecipes]);
   const [recipeName, setRecipeName] = useState('');
   const [beerStyle, setBeerStyle] = useState('');
 
@@ -52,7 +52,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
   const [maltsQuantity, setMaltsQuantity] = useState('');
   const [yeastName, setYeastName] = useState('');
   const [yeastQuantity, setYeastQuantity] = useState('');
-  const [selectedRecipe, setSelectedRecipe] = useState<myRecipe | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<MyRecipe | null>(null);
 
   useEffect(() => {
     setMyRecipes([...myRecipes]);
@@ -61,7 +61,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const postRecipe: postRecipeType = {
+    const postRecipe: PostRecipeType = {
       name: recipeName,
       style: beerStyle,
       instructions: instructions,
@@ -79,7 +79,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
       console.log(err);
     }
   };
-  const handleRecipeClick = (recipe: myRecipe) => {
+  const handleRecipeClick = (recipe: MyRecipe) => {
     setSelectedRecipe(recipe);
   };
 
@@ -183,7 +183,7 @@ const MyRecipesPage: React.FC<MyRecipesPageProps> = ({ myRecipes, allRecipes }) 
           <h2>Your recipe list</h2>
           <ul className="my-recipes">
             {allMyRecipes &&
-              allMyRecipes.map((recipe: myRecipe) => (
+              allMyRecipes.map((recipe: MyRecipe) => (
                 <li className="your-list-li" key={recipe._id} onClick={() => handleRecipeClick(recipe)}>
                   <span className="my-recipe-name">
                     {recipe.name}

@@ -8,34 +8,56 @@ import MyRecipesPage from './pages/MyRecipesPage';
 import Homepage from './pages/HomePage';
 import { getOurRecipes, getMyRecipes } from './utils/ApiService';
 import { useState, useEffect } from 'react';
-import { ourRecipe, myRecipe } from './types';
+import { OurRecipe, MyRecipe } from './types';
 
 interface MyRecipesPageProps {
-  myRecipes: myRecipe[];
-  allRecipes: ourRecipe[];
+  myRecipes: MyRecipe[];
+  allRecipes: OurRecipe[];
 }
 
 const App: React.FC<MyRecipesPageProps> = () => {
-  const [allRecipes, setAllRecipes] = useState<ourRecipe[]>([]);
-  const [myRecipes, setMyRecipes] = useState<myRecipe[]>([]);
+  const [allRecipes, setAllRecipes] = useState<OurRecipe[]>([]);
+  const [myRecipes, setMyRecipes] = useState<MyRecipe[]>([]);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
+    setError(false);
     getOurRecipes().then((fetchedRecipes) => {
+      const ourR = fetchedRecipes;
+      if (!ourR) {
+        setError(true);
+      }
       setAllRecipes(fetchedRecipes);
     });
     getMyRecipes().then((fetchedMyRecipes) => {
+      const myR = fetchedMyRecipes;
+      if (!myR) {
+        setError(true);
+      }
       setMyRecipes(fetchedMyRecipes);
     });
+    setIsLoading(false);
   }, []);
 
   return (
     <div className="App">
-      <NavBar></NavBar>
-      <Routes>
-        <Route path="/" element={<Homepage></Homepage>}></Route>
-        <Route path="/inventory" element={<InventoryPage allRecipes={allRecipes}></InventoryPage>}></Route>
-        <Route path="/our-recipes" element={<OurRecipesPage allRecipes={allRecipes}></OurRecipesPage>}></Route>
-        <Route path="/my-recipes" element={<MyRecipesPage allRecipes={allRecipes} myRecipes={myRecipes}></MyRecipesPage>}></Route>
-      </Routes>
+      {isLoading && <p>Loading...</p>}
+      <div>
+        {error ? (
+          <p>An error occurred, Server maybe down. Please try later</p>
+        ) : (
+          <>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Homepage />}></Route>
+              <Route path="/inventory" element={<InventoryPage allRecipes={allRecipes} />}></Route>
+              <Route path="/our-recipes" element={<OurRecipesPage allRecipes={allRecipes} />}></Route>
+              <Route path="/my-recipes" element={<MyRecipesPage allRecipes={allRecipes} myRecipes={myRecipes} />}></Route>
+            </Routes>
+          </>
+        )}
+      </div>
     </div>
   );
 };

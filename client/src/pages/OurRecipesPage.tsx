@@ -1,18 +1,17 @@
-import { getOurRecipes } from '../utils/ApiService';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './RecipesPages.css';
-import { ourRecipe } from '../types';
+import { OurRecipe } from '../types';
 
 interface OurRecipesPageProps {
-  allRecipes: ourRecipe[];
+  allRecipes: OurRecipe[];
 }
 
 const OurRecipesPage: React.FC<OurRecipesPageProps> = ({ allRecipes }) => {
   const ourRecipes = allRecipes;
 
-  const [selectedRecipe, setSelectedRecipe] = useState<ourRecipe | null>(null);
+  const [selectedRecipe, setSelectedRecipe] = useState<OurRecipe | null>(null);
   console.log(selectedRecipe);
-  const handleRecipeClick = (recipe: ourRecipe) => {
+  const handleRecipeClick = (recipe: OurRecipe) => {
     setSelectedRecipe(recipe);
   };
 

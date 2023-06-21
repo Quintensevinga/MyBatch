@@ -36,6 +36,6 @@
   color: red;
 }
 
-.mainNav .active-link {
+.mainNav .activeLink {
   border-top: 2px solid #fbb117;
 }

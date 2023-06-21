@@ -8,23 +8,23 @@ function NavBar() {
       <ul>
         <li>
           {/* removed exact added end */}
-          <NavLink to="/" className={location.pathname === '/' ? 'active-link' : ''} end>
+          <NavLink to="/" className={location.pathname === '/' ? 'activeLink' : ''} end>
             MyBatch
           </NavLink>
         </li>
         <li>
-          <NavLink to="/inventory" className={location.pathname === '/inventory' ? 'active-link' : ''}>
+          <NavLink to="/inventory" className={location.pathname === '/inventory' ? 'activeLink' : ''}>
             Inventory
           </NavLink>
         </li>
         <li>
-          <NavLink to="/our-recipes" className={location.pathname === '/our-recipes' ? 'active-link' : ''}>
+          <NavLink to="/our-recipes" className={location.pathname === '/our-recipes' ? 'activeLink' : ''}>
             Our recipes
           </NavLink>
         </li>
 
         <li>
-          <NavLink to="/my-recipes" className={location.pathname === '/my-recipes' ? 'active-link' : ''}>
+          <NavLink to="/my-recipes" className={location.pathname === '/my-recipes' ? 'activeLink' : ''}>
             My recipes
           </NavLink>
         </li>
